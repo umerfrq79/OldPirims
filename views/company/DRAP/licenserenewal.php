@@ -15,7 +15,24 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
 }
 ?>
 <head>
-  
+    <?php if($myAction == 'lookup'){ ?>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.dataTables.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/select/1.6.0/css/select.dataTables.min.css" />
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/select/1.6.0/js/dataTables.select.min.js"></script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.colVis.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.colVis.min.js"></script>
+    <?php } ?>
 </head>
 
 <!-- Content Wrapper. Contains page content -->
@@ -85,7 +102,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
             <!-- /.card-header -->
             <div class="card-body table-responsive cardBodyTransaction">
 
-              <table id="table" class="table table-bordered table-striped">
+              <table id="<?php echo ($myAction == 'lookup' ? 'newtable' : '') ?>" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th style="width:5%">S.#</th>
@@ -2737,4 +2754,79 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
     $('#panelRemarks').summernote('disable');
     <?php } ?>
   })
+</script>
+<script>
+
+    $(document).ready(function ($) {
+
+        //     $('#newtable tfoot th').each(function() {
+        // var title = $(this).text();
+        // $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        // });
+
+
+        var table = $('#newtable').DataTable({
+            dom: 'Blfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    exportOptions: {
+                        columns: [ 0, ':visible' ]
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [ 0, ':visible' ]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [ 0, ':visible' ]
+                    }
+                },
+                'colvis',
+                {
+                    extend: 'print',
+                    text: 'Print all',
+                    exportOptions: {
+                        //columns: [ 0, 1, 5 ],
+                        modifier: {
+                            selected: null
+                        }
+                    }
+                },
+                {
+
+                    extend: 'print',
+                    text: 'Print selected',
+                    exportOptions: {
+                        columns: [ 0, ':visible' ]
+                    }
+                }
+            ],
+            select: {
+                style: 'Single'
+            }
+
+        });
+
+        table.columns().every(function() {
+            var that = this;
+
+            $('input', this.footer()).on('keyup change', function() {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        $('#newtable tbody').on('click', 'tr', function () {
+            $(this).toggleClass('selected');
+        });
+
+    });
 </script>

@@ -14118,15 +14118,14 @@ class myController extends login
                 }
             }
 
-            $dataDetailTable[$key] = $key;
             $sId = 0;
-            $keys[] = array_keys($dataDetailTable);
+            $keys = array_keys($dataDetailTable);
             foreach (array_keys($dataDetailTable) as $key) {
                 $current_key = current($keys);
-                $current_value = $dataDetailTable[$key];
+                $current_value = $dataDetailTable[$current_key];
                 $next_key = next($keys);
                 $next_value = @$dataDetailTable[$next_key];
-                $tableName = substr($key, 0, strpos($key, '-'));
+                $tableName = substr($current_key, 0, strpos($current_key, '-'));
                 $nextTableName = substr($next_key, 0, strpos($next_key, '-'));
                 if ($tableName == 'tabledetailproposedpacking') {
                     $tableDetail = 'tbl_registrationproposedprice';
@@ -14257,8 +14256,7 @@ class myController extends login
                 $this->session->set_flashdata('error', 'Something went wrong.');
             }
 
-            redirect('/newregistration/lookup');
-            $this->session->set_flashdata('success', 'Record updated successfully.');
+            redirect(__FUNCTION__ . '/add');
         } else {
             $this->accessDenied();
             return;
@@ -14383,6 +14381,9 @@ class myController extends login
             $sub_array[] = $row->usedFor;
             $sub_array[] = date('d-M-y', strtotime(date('d-M-y H:i', strtotime($row->issueDateManual))));
             $sub_array[] = date('d-M-y', strtotime(date('d-M-y H:i', strtotime($row->validTill))));
+            $sub_array[] = $row->lastRenewalDateManual;
+            $sub_array[] = ($row->productStatus == 1) ? 'Verified' : ($row->productStatus == 2) ? 'Un-Verified' : ($row->productStatus == 3) ? 'Provisionally Verified' : '';
+            $sub_array[] = $row->registrationStatus;
 
             $sub_array[] = '<div class="btn-group">
                         <a href="https://pirims.dra.gov.pk/importregistration/view/' . $row->id . '" class="btn btn-success"><i class="fa fa-eye"></i></a>
@@ -15652,6 +15653,9 @@ class myController extends login
             $sub_array[] = $row->usedFor;
             $sub_array[] = date('d-M-y', strtotime(date('d-M-y H:i', strtotime($row->issueDateManual))));
             $sub_array[] = date('d-M-y', strtotime(date('d-M-y H:i', strtotime($row->validTill))));
+            $sub_array[] = $row->lastRenewalDateManual;
+            $sub_array[] = ($row->productStatus == 1) ? 'Verified' : ($row->productStatus == 2) ? 'Un-Verified' : ($row->productStatus == 3) ? 'Provisionally Verified' : '';
+            $sub_array[] = $row->registrationStatus;
 
             $sub_array[] = '<div class="btn-group">
                         <a href="https://pirims.dra.gov.pk/importregistration/view/' . $row->id . '" class="btn btn-success"><i class="fa fa-eye"></i></a>
