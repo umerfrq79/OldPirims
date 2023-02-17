@@ -5220,15 +5220,24 @@ if(@$records[0]->countPendingVariance > 0 && $this->roleId == 26 && $myAction ==
 
     $(document).ready(function ($) {
 
-        //     $('#newtable tfoot th').each(function() {
-        // var title = $(this).text();
-        // $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-        // });
+        $('#newtable thead th').each(function() {
+            var title = $(this).text();
+            $(this).html('<input type="text" placeholder="Search" />');
+        });
 
 
         var table = $('#newtable').DataTable({
             dom: 'Blfrtip',
             buttons: [
+                {
+                    extend: 'selectAll',
+                    className: 'selectall',
+                    action : function(e) {
+                        e.preventDefault();
+                        table.rows({ search: 'applied'}).deselect();
+                        table.rows({ search: 'applied'}).select();
+                    }
+                },
                 {
                     extend: 'copyHtml5',
                     exportOptions: {
@@ -5276,7 +5285,7 @@ if(@$records[0]->countPendingVariance > 0 && $this->roleId == 26 && $myAction ==
         table.columns().every(function() {
             var that = this;
 
-            $('input', this.footer()).on('keyup change', function() {
+            $('input', this.header()).on('keyup change', function() {
                 if (that.search() !== this.value) {
                     that
                         .search(this.value)

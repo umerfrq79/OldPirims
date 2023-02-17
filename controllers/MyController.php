@@ -14256,7 +14256,7 @@ class myController extends login
                 $this->session->set_flashdata('error', 'Something went wrong.');
             }
 
-            redirect(__FUNCTION__ . '/add');
+            redirect('https://pirims.dra.gov.pk/newregistration/lookup');
         } else {
             $this->accessDenied();
             return;
@@ -14382,7 +14382,7 @@ class myController extends login
             $sub_array[] = date('d-M-y', strtotime(date('d-M-y H:i', strtotime($row->issueDateManual))));
             $sub_array[] = date('d-M-y', strtotime(date('d-M-y H:i', strtotime($row->validTill))));
             $sub_array[] = $row->lastRenewalDateManual;
-            $sub_array[] = ($row->productStatus == 1) ? 'Verified' : ($row->productStatus == 2) ? 'Un-Verified' : ($row->productStatus == 3) ? 'Provisionally Verified' : '';
+            // $sub_array[] = ($row->productStatus == 1) ? 'Verified' : ($row->productStatus == 2) ? 'Un-Verified' : ($row->productStatus == 3) ? 'Provisionally Verified' : '';
             $sub_array[] = $row->registrationStatus;
 
             $sub_array[] = '<div class="btn-group">
@@ -15654,7 +15654,7 @@ class myController extends login
             $sub_array[] = date('d-M-y', strtotime(date('d-M-y H:i', strtotime($row->issueDateManual))));
             $sub_array[] = date('d-M-y', strtotime(date('d-M-y H:i', strtotime($row->validTill))));
             $sub_array[] = $row->lastRenewalDateManual;
-            $sub_array[] = ($row->productStatus == 1) ? 'Verified' : ($row->productStatus == 2) ? 'Un-Verified' : ($row->productStatus == 3) ? 'Provisionally Verified' : '';
+            // $sub_array[] = ($row->productStatus == 1) ? 'Verified' : ($row->productStatus == 2) ? 'Un-Verified' : ($row->productStatus == 3) ? 'Provisionally Verified' : '';
             $sub_array[] = $row->registrationStatus;
 
             $sub_array[] = '<div class="btn-group">
