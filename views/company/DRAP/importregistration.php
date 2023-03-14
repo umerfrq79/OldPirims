@@ -463,212 +463,6 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                     <?php if($this->roleId == 26 && $myAction =='edit'){ ?>
                         <div class="card-body cardBodyTransaction">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <?php $label = 'Company Name'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'companyAccountId'; ?>
-                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control select2 " id="<?php echo @$column; ?>" name="<?php echo @$column; ?>">
-                                            <option value="">Select <?php echo @$label; ?></option>
-                                            <?php
-                                            if(!empty($companies))
-                                            {
-                                                foreach ($companies as $company)
-                                                {
-                                                    ?>
-                                                    <option data-companyname="<?php echo $company->companyName; ?>" data-address="<?php echo $company->companyAddress ?>" value="<?php echo $company->companyUniqueNo ?>" <?php if($company->companyUniqueNo == @$recordsEdit[0]->$column){ echo 'selected'; } ?>><?php echo $company->companyName.' -'.$company->licenseNoManual.'- (<small>'.$company->companyAddress.'</small>)'; ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 d-none">
-                                    <div class="form-group">
-                                        <?php $label = 'Company Address'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'companyAddress'; ?>
-                                        <textarea name="<?php echo @$column; ?>" readonly  id="<?php echo @$column; ?>" class="form-control" rows="3"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 d-none">
-                                    <div class="form-group">
-                                        <?php $label = 'Company Name'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'companyName'; ?>
-                                        <textarea name="<?php echo @$column; ?>" readonly  id="<?php echo @$column; ?>" class="form-control" rows="3"></textarea>
-                                    </div>
-                                </div>
-                                <!--<div class="col-md-6">
-                <div class="form-group">
-                  <?php $label = 'Establishment License No'; ?>
-                  <label><?php echo $label; ?></label>
-                  <?php $column = 'masterId'; ?>
-                    <input readonly <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="" value="<?php echo @$licenseApproved1[0]->licenseSubType; ?>" class="form-control">
-                </div>
-                <input <?php if($myAction == 'add'){echo 'readonly';}?> <?php if($myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>Hidden" name="<?php echo @$column; ?>" value="<?php echo @$licenseApproved1[0]->id; ?>">
-                <?php $column = 'licenseTypeId'; ?>
-                <input type="hidden" id="<?php echo @$column; ?>Hidden" name="<?php echo @$column; ?>" value="<?php echo @$licenseApproved1[0]->licenseTypeId; ?>">
-              </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <?php $label = 'Manufacturing Section'; ?>
-                        <label><?php echo $label; ?></label>
-                        <?php $column = 'manufacturingsection'; ?>
-                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>" class="form-control">
-                    </div>
-                </div>
-                -->
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Dealing Section'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'dealingsection'; ?>
-                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control select2" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>">
-                                            <option value="">Select <?php echo @$label; ?></option>
-                                            <option value="REG-I" <?php if("REG-I" == @$recordsEdit[0]->$column){ echo 'selected'; } ?>>REG-I</option>
-                                            <option value="REG-II" <?php if("REG-II" == @$recordsEdit[0]->$column){ echo 'selected'; } ?>>REG-II</option>
-                                            <option value="REG-I&V(I)" <?php if("REG-I&V(I)" == @$recordsEdit[0]->$column){ echo 'selected'; } ?>>REG-I&V(I)</option>
-                                            <option value="REG-I&V(II)" <?php if("REG-I&V(II)" == @$recordsEdit[0]->$column){ echo 'selected'; } ?>>REG-I&V(II)</option>
-                                            <option value="PR-I" <?php if("PR-I" == @$recordsEdit[0]->$column){ echo 'selected'; } ?>>PR-I</option>
-                                            <option value="PR-II" <?php if("PR-II" == @$recordsEdit[0]->$column){ echo 'selected'; } ?>>PR-II</option>
-                                            <option value="BIOLOGICCAL" <?php if("BIOLOGICCAL" == @$recordsEdit[0]->$column){ echo 'selected'; } ?>>BIOLOGICCAL</option>
-
-                                        </select>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group ui-widget">
-                                        <?php $label = 'File Number'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'regFileNo'; ?>
-                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Meeting No.'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'meetingNo'; ?>
-                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>" class="form-control">
-                                    </div>
-                                </div>
-
-
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Used For'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'usedForId'; ?>
-                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control select2" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>">
-                                            <option value="">Select <?php echo @$label; ?></option>
-                                            <?php
-                                            if(!empty($usedFor))
-                                            {
-                                                foreach ($usedFor as $record)
-                                                {
-                                                    ?>
-                                                    <option value="<?php echo $record->id ?>" <?php if($record->id == @$recordsEdit[0]->$column){ echo 'selected'; } ?>><?php echo $record->usedFor ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Registration Date'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'issueDateManual'; ?>
-                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo date('Y-m-d', strtotime(date('d-m-Y H:i', strtotime(@$recordsEdit[0]->$column)))); ?>"  class="form-control required">
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Route of Admin'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'routeOfAdminId'; ?>
-                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control select2" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>">
-                                            <option value="">Select <?php echo @$label; ?></option>
-                                            <?php
-                                            if(!empty($routeOfAdmin))
-                                            {
-                                                foreach ($routeOfAdmin as $record)
-                                                {
-                                                    ?>
-                                                    <option value="<?php echo $record->id ?>" <?php if($record->id == @$recordsEdit[0]->$column){ echo 'selected'; } ?>><?php echo $record->routeOfAdmin ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Renewal Due Date'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'validTill'; ?>
-                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Registration No.'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'registrationNo'; ?>
-                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>" class="form-control required">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <?php $label = 'Approved Brand Name'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'approvedName'; ?>
-                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>" class="form-control required">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <?php $label = 'Dosage Form'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'dosageFormId'; ?>
-                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control prefixselect2" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>">
-                                            <option value="">Select <?php echo @$label; ?></option>
-                                            <?php
-                                            if(!empty($dosageForm))
-                                            {
-                                                foreach ($dosageForm as $record)
-                                                {
-                                                    ?>
-                                                    <option value="<?php echo $record->id ?>" <?php if($record->id == @$recordsEdit[0]->$column){ echo 'selected'; } ?>><?php echo $record->dosageName ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <?php $label = 'Reference Unit (In case if reference unit is NOT Dosage Form itself)'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'refUnit'; ?>
-                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>" class="form-control">
-                                    </div>
-                                </div>
-
 
                                 <div class="col-md-12">
                                     <div class="card card-primary card-outline">
@@ -723,7 +517,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12 w-100 ui-widget">
                                                                     <div class="form-group">
                                                                         <?php $column = 'innManual'; ?>
-                                                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo $myTable; ?>-<?php echo $column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo $column; ?>_detail[]" value="<?php echo @$record->$column; ?>" class="form-control generic">
+<!--                                                                        <input --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- type="text" id="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_detail[]" value="--><?php //echo @$record->$column; ?><!--" class="form-control generic">-->
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -731,7 +525,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <?php $column = 'strength'; ?>
-                                                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo $myTable; ?>-<?php echo $column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo $column; ?>_detail[]" value="<?php echo @$record->$column; ?>" class="form-control ">
+<!--                                                                        <input --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- type="text" id="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_detail[]" value="--><?php //echo @$record->$column; ?><!--" class="form-control ">-->
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -741,20 +535,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                     <div class="form-group">
                                                                         <?php $label = 'Unit'; ?>
                                                                         <?php $column = 'unitId'; ?>
-                                                                        <select style="max-width: 200px" <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control select2" id="<?php echo $myTable; ?>-<?php echo @$column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo @$column; ?>_detail[]">
-                                                                            <option value="">Select <?php echo @$label; ?></option>
-                                                                            <?php
-                                                                            if(!empty($unit))
-                                                                            {
-                                                                                foreach ($unit as $detail)
-                                                                                {
-                                                                                    ?>
-                                                                                    <option value="<?php echo $detail->id ?>" <?php if($detail->id == @$record->$column){ echo 'selected'; } ?>><?php echo $detail->unit ?></option>
-                                                                                    <?php
-                                                                                }
-                                                                            }
-                                                                            ?>
-                                                                        </select>
+
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -762,8 +543,8 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                             <?php if($myAction <> 'view'){ ?>
                                                                 <td class="text-center widthMaxContent">
                                                                     <div class="btn-group">
-                                                                        <span class="btn btn-primary plus"><i class="fa fa-plus"></i></span>
-                                                                        <span class="btn btn-danger trash"><i class="fa fa-trash"></i></span>
+<!--                                                                        <span class="btn btn-primary plus"><i class="fa fa-plus"></i></span>-->
+<!--                                                                        <span class="btn btn-danger trash"><i class="fa fa-trash"></i></span>-->
                                                                     </div>
                                                                 </td>
                                                             <?php } ?>
@@ -792,19 +573,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                 </div>
 
 
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <?php $label = 'Label Claim'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'labelClaim'; ?>
-                                        <textarea readonly <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" class="form-control" rows="3">
-                            <?php echo ((@$recordsEdit[0]->refUnit)? @$recordsEdit[0]->refUnit:'Each '.@$recordsEdit[0]->dosageName.' contains:')."\n";
-                            foreach ($recordsDetailINN as $record1)
-                            {
-                                echo @$record1->innManual.' .... '.@$record1->strength.' '.@$record1->unit."\n";
-                            }?></textarea>
-                                    </div>
-                                </div>
+
 
                                 <div class="col-md-12">
                                     <div class="card card-primary card-outline">
@@ -861,7 +630,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <?php $column = 'packSize'; ?>
-                                                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo $myTable; ?>-<?php echo $column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo $column; ?>_detail[]" value="<?php echo @$record->$column; ?>" class="form-control" placeholder="Pack Size">
+<!--                                                                        <input --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- type="text" id="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_detail[]" value="--><?php //echo @$record->$column; ?><!--" class="form-control" placeholder="Pack Size">-->
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -869,7 +638,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <?php $column = 'description'; ?>
-                                                                        <textarea <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> id="<?php echo $myTable; ?>-<?php echo @$column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo @$column; ?>_detail[]" class="form-control " rows="3"><?php echo @$record->$column; ?></textarea>
+<!--                                                                        <textarea --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- id="--><?php //echo $myTable; ?><!-----><?php //echo @$column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo @$column; ?><!--_detail[]" class="form-control " rows="3">--><?php //echo @$record->$column; ?><!--</textarea>-->
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -878,7 +647,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <?php $column = 'approvedPrice'; ?>
-                                                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="number" id="<?php echo $myTable; ?>-<?php echo $column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo $column; ?>_detail[]" value="<?php echo @$record->$column ?>" class="form-control" placeholder="Price" style="text-align: right; direction: ltr;" step="any" min="0">
+<!--                                                                        <input --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- type="number" id="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_detail[]" value="--><?php //echo @$record->$column ?><!--" class="form-control" placeholder="Price" style="text-align: right; direction: ltr;" step="any" min="0">-->
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -886,13 +655,13 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <?php $column = 'pricingType'; ?>
-                                                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control " id="<?php echo $myTable; ?>-<?php echo @$column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo @$column; ?>_detail[]">
-                                                                            <option <?php echo @$record->$column == "Controlled"? 'selected':''; ?> value="Controlled">Controlled</option>
-                                                                            <option <?php echo @$record->$column == "Free of Cost"? 'selected':''; ?> value="Free of Cost">Free of Cost</option>
-                                                                            <option <?php echo @$record->$column == "De-Controlled"? 'selected':''; ?> value="De-Controlled">De-Controlled</option>
-                                                                            <option <?php echo @$record->$column == "As Per SRO"? 'selected':''; ?> value="As Per SRO">As Per SRO</option>
-
-                                                                        </select>
+<!--                                                                        <select --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- class="form-control " id="--><?php //echo $myTable; ?><!-----><?php //echo @$column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo @$column; ?><!--_detail[]">-->
+<!--                                                                            <option --><?php //echo @$record->$column == "Controlled"? 'selected':''; ?><!-- value="Controlled">Controlled</option>-->
+<!--                                                                            <option --><?php //echo @$record->$column == "Free of Cost"? 'selected':''; ?><!-- value="Free of Cost">Free of Cost</option>-->
+<!--                                                                            <option --><?php //echo @$record->$column == "De-Controlled"? 'selected':''; ?><!-- value="De-Controlled">De-Controlled</option>-->
+<!--                                                                            <option --><?php //echo @$record->$column == "As Per SRO"? 'selected':''; ?><!-- value="As Per SRO">As Per SRO</option>-->
+<!---->
+<!--                                                                        </select>-->
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -900,15 +669,15 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <?php $column = 'proposedPrice'; ?>
-                                                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="number" id="<?php echo $myTable; ?>-<?php echo $column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo $column; ?>_detail[]" value="<?php echo @$record->$column; ?>" class="form-control" placeholder="As per SRO" style="text-align: right; direction: ltr;" step="any" min="0">
+<!--                                                                        <input --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- type="number" id="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_detail[]" value="--><?php //echo @$record->$column; ?><!--" class="form-control" placeholder="As per SRO" style="text-align: right; direction: ltr;" step="any" min="0">-->
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <?php if($myAction <> 'view' ){ ?>
                                                                 <td class="text-center widthMaxContent">
                                                                     <div class="btn-group">
-                                                                        <span class="btn btn-primary plus"><i class="fa fa-plus"></i></span>
-                                                                        <span class="btn btn-danger trash"><i class="fa fa-trash"></i></span>
+<!--                                                                        <span class="btn btn-primary plus"><i class="fa fa-plus"></i></span>-->
+<!--                                                                        <span class="btn btn-danger trash"><i class="fa fa-trash"></i></span>-->
                                                                     </div>
                                                                 </td>
                                                             <?php } ?>
@@ -939,13 +708,6 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
 
 
 
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-
-                                    </div>
-                                </div>
-
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <?php $label = 'Finished Product Specification'; ?>
@@ -968,60 +730,34 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-9">
                                     <div class="form-group">
                                         <?php $label = 'Testing Method'; ?>
                                         <label><?php echo $label; ?></label>
                                         <?php $column = 'testingmethod'; ?>
-                                        <textarea name="<?php echo @$column; ?>"  id="<?php echo @$column; ?>" class="form-control" rows="10" placeholder="<?php echo @$recordsEdit[0]->$column; ?>"></textarea>
+                                        <textarea name="<?php echo @$column; ?>"  id="<?php echo @$column; ?>" class="form-control" rows="10" >
+                                            <?php echo @$recordsEdit[0]->$column; ?>
+                                        </textarea>
                                     </div>
                                 </div>
-
-                                <div class="col-md-8">
-                                    <?php $label = 'Already Submitted Data:'; ?>
-                                    <label><?php echo $label; ?></label>
-                                    <br>
-                                    <label><?php echo @$recordsEdit[0]->$column; ?></label>
-                                </div>
-
-
+                        <br>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <?php $label = 'Shelf Life'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'shelfLife'; ?>
-                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>" class="form-control">
+                                        <?php $label = 'Appearance/Color Description'; ?>
+                                        <label><?php echo $label; ?>: </label>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+
+                                <div class="col-md-9">
                                     <div class="form-group">
-                                        <?php $label = 'Shelf Life Unit'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'shelfLifeunit'; ?>
-                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control select2" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>">
-                                            <option selected value="Year(s)">Year(s)</option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 'Months(s)'?'selected':''; ?> value="Months(s)">Month(s)</option>
-                                        </select>
+                                        <?php $column =  'descriptionMethod'; ?>
+                                        <textarea name="<?php echo @$column; ?>"  id="<?php echo @$column; ?>" class="form-control" rows="2" >
+                                            <?php echo @$recordsEdit[0]->$column; ?>
+                                        </textarea>
                                     </div>
                                 </div>
 
 
-
-
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Manufacturing Type'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'regTypeId'; ?>
-                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control select2" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>">
-                                            <option value="">Select <?php echo @$label; ?></option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 1?'selected':''; ?> value="1">Self Manufacturing</option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 2?'selected':''; ?> value="2">Contract Manufacturing</option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 3?'selected':''; ?> value="3">Import</option>
-                                        </select>
-                                    </div>
-                                </div>
                                 <?php if($this->roleId <> 26){ ?>
                                     <div class="col-md-2">
                                         <div class="form-group">
@@ -1039,57 +775,8 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                     </div>
                                 <?php } ?>
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Product Status'; ?>
-                                        <label><?php echo $label; ?></label>
-                                        <?php $column = 'registrationStatus'; ?>
-                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control select2 required" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>">
-                                            <option value="">Select <?php echo @$label; ?></option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 'Cancelled'?'selected':''; ?> value="Cancelled">Cancelled</option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 'De-Activated'?'selected':''; ?> value="De-Activated">De-Activated</option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 'De-Registered'?'selected':''; ?> value="De-Registered">De-Registered</option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 'Transferred'?'selected':''; ?> value="Transferred">Transferred</option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 'Approved'?'selected':''; ?> value="Approved">Approved</option>
-                                            <option <?php echo @$recordsEdit[0]->$column == 'Provisionally Active'?'selected':''; ?> value="Provisionally Active">Provisionally Active</option>
 
-                                        </select>
-                                    </div>
-                                </div>
-                                <?php if($this->roleId <> 26){echo 'disabled';}{?>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <?php $label = 'Public'; ?>
-                                            <label class="w-100"><?php echo $label; ?></label>
-                                            <?php $column = 'isPublic'; ?>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" <?php echo @$recordsEdit[0]->$column == '1'?'checked':''; ?>  value="1">
-                                                <label class="form-check-label" for="inlineRadio1">Yes</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="<?php echo @$column; ?>" <?php echo @$recordsEdit[0]->$column == '0'?'checked':((@$recordsEdit[0]->$column)!== null?'':'checked'); ?> name="<?php echo @$column; ?>" value="0">
-                                                <label class="form-check-label" for="inlineRadio2">No</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <?php $label = 'Display to Company'; ?>
-                                            <label class="w-100"><?php echo $label; ?></label>
-                                            <?php $column = 'isCompany'; ?>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" <?php echo @$recordsEdit[0]->$column == '1'?'checked':''; ?>  value="1">
-                                                <label class="form-check-label" for="inlineRadio1">Yes</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" id="<?php echo @$column; ?>" <?php echo @$recordsEdit[0]->$column == '0'?'checked':((@$recordsEdit[0]->$column)!== null?'':'checked'); ?> name="<?php echo @$column; ?>" value="0">
-                                                <label class="form-check-label" for="inlineRadio2">No</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                                ?>
+
 
                                 <div class="col-md-12">
                                     <div class="card card-primary card-outline">
@@ -1153,20 +840,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                         <div class="form-group">
                                                                             <?php
                                                                             $column = 'comp'; ?>
-                                                                            <select style="height: inherit; width: 100%" id="<?php echo $myTable; ?>-<?php echo $column; ?>_<?=$sn?>"   class="form-control select2 comp">
-                                                                                <option value="">Select Company</option>
-                                                                                <?php
-                                                                                if(!empty($companies))
-                                                                                {
-                                                                                    foreach ($companies as $company)
-                                                                                    {
-                                                                                        ?>
-                                                                                        <option data-add="<?php echo $company->companyAddress ?>" value="<?php echo $company->companyName ?>" ><?php echo $company->companyName.' (<small>'.$company->companyAddress.'</small>)'; ?></option>
-                                                                                        <?php
-                                                                                    }
-                                                                                }
-                                                                                ?>
-                                                                            </select>
+
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -1177,7 +851,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <?php $column = 'companyName'; ?>
-                                                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo $myTable; ?>-<?php echo $column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo $column; ?>_detail[]" value="<?php echo @$record->$column; ?>" class="form-control cname">
+<!--                                                                        <input --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- type="text" id="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_detail[]" value="--><?php //echo @$record->$column; ?><!--" class="form-control cname">-->
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -1185,7 +859,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <?php $column = 'role'; ?>
-                                                                        <input <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> type="text" id="<?php echo $myTable; ?>-<?php echo $column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo $column; ?>_detail[]" value="<?php echo @$record->$column; ?>" class="form-control">
+<!--                                                                        <input --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- type="text" id="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo $column; ?><!--_detail[]" value="--><?php //echo @$record->$column; ?><!--" class="form-control">-->
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -1194,7 +868,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <?php $column = 'companyAddress'; ?>
-                                                                        <textarea <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> id="<?php echo $myTable; ?>-<?php echo @$column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo @$column; ?>_detail[]" class="form-control cadd" rows="3"><?php echo @$record->$column; ?></textarea>
+<!--                                                                        <textarea --><?php //if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?><!-- id="--><?php //echo $myTable; ?><!-----><?php //echo @$column; ?><!--_--><?php //=$sn?><!--" name="--><?php //echo $myTable; ?><!-----><?php //echo @$column; ?><!--_detail[]" class="form-control cadd" rows="3">--><?php //echo @$record->$column; ?><!--</textarea>-->
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -1203,28 +877,15 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                                     <div class="form-group">
                                                                         <?php $label = 'Country'; ?>
                                                                         <?php $column = 'companyCountry'; ?>
-                                                                        <select <?php if($myAction == 'view' || $myAction == 'edit'){echo 'disabled';}?> class="form-control select2" id="<?php echo $myTable; ?>-<?php echo @$column; ?>_<?=$sn?>" name="<?php echo $myTable; ?>-<?php echo @$column; ?>_detail[]">
-                                                                            <option value="">Select <?php echo @$label; ?></option>
-                                                                            <?php
-                                                                            if(!empty($countries))
-                                                                            {
-                                                                                foreach ($countries as $detail)
-                                                                                {
-                                                                                    ?>
-                                                                                    <option value="<?php echo $detail->id ?>" <?php if($detail->id == @$record->$column){ echo 'selected'; } ?>><?php echo $detail->countryName ?></option>
-                                                                                    <?php
-                                                                                }
-                                                                            }
-                                                                            ?>
-                                                                        </select>
+
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <?php if($myAction <> 'view' ){ ?>
                                                                 <td class="text-center widthMaxContent">
                                                                     <div class="btn-group">
-                                                                        <span class="btn btn-primary plus"><i class="fa fa-plus"></i></span>
-                                                                        <span class="btn btn-danger trash"><i class="fa fa-trash"></i></span>
+<!--                                                                        <span class="btn btn-primary plus"><i class="fa fa-plus"></i></span>-->
+<!--                                                                        <span class="btn btn-danger trash"><i class="fa fa-trash"></i></span>-->
                                                                     </div>
                                                                 </td>
                                                             <?php } ?>
@@ -2529,11 +2190,26 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
             if(['','0','23','27','28','32','22','26'].includes(selValue))
             {
                 if(!$("#testingmethod").is(':visible')) $("#testingmethod").show();
-                tinymce.init({selector: '#testingmethod'});
+                if(!$("#descriptionMethod").is(':visible')) $("#descriptionMethod").show();
+                tinymce.init({selector: '#descriptionMethod'});
+
+                tinymce.init({
+                    selector: '#testingmethod',
+                    plugins: [
+                        'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
+                        'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
+                        'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
+                    ],
+                    toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+                        'alignleft aligncenter alignright alignjustify | ' +
+                        'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+                });
             }
             else{
                 tinymce.remove("#testingmethod");
                 $("#testingmethod").hide();
+                tinymce.remove("#descriptionMethod");
+                $("#descriptionMethod").hide();
             }
         }
     });

@@ -237,6 +237,25 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                     }
                                     ?>
                                     </tbody>
+                                    <tfoot>
+                                    <tr>
+
+                                        <th width="5%">S.#</th>
+                                        <th width="20%">Company</th>
+                                        <th width="5%">License No.</th>
+                                        <th width="5%">Phase</th>
+                                        <?php if($this->roleId == 6 || $this->roleId == 10 || $this->roleId == 14 || $this->roleId == 18 || $this->roleId == 38 || $this->roleId == 43){?>
+                                            <th width="5%">Assigned Officer</th>
+                                            <?php if($this->roleId == 6 || $this->roleId == 10 || $this->roleId == 38|| $this->roleId == 43){?>
+                                                <th width="5%">Desk Officer</th>
+                                                <?php
+                                            }
+                                        } ?>
+                                        <th width="5%" class="text-center">App. Date</th>
+                                        <th width="5%" class="text-center">Stage</th>
+                                        <th width="15%" class="text-center">Action</th>
+                                    </tr>
+                                    </tfoot>
                                     <!-- <tfoot>
                                     <tr>
                                         <th>S.#</th>
@@ -3125,18 +3144,27 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
 
 </script>
 <script>
-
-    $(document).ready(function ($) {
-
-           $('#newtable thead th').each(function() {
-        var title = $(this).text();
-        $(this).html('<input type="text" placeholder="Search" />');
+    $(document).ready(function () {
+        //Only needed for the filename of export files.
+        //Normally set in the title tag of your page.
+        document.title = "PIRIMS - DML or In-Process Data";
+        // Create search inputs in footer
+        $("#newtable tfoot th").each(function () {
+            var title = $(this).text();
+            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
         });
-
-
-        var table = $('#newtable').DataTable({
-            dom: 'Blfrtip',
+        // DataTable initialisation
+        var table = $("#newtable").DataTable({
+            dom: '<"dt-buttons"Bf><"clear">lirtp',
+            paging: true,
+            autoWidth: true,
             buttons: [
+                "colvis",
+                "copyHtml5",
+                "csvHtml5",
+                "excelHtml5",
+                "pdfHtml5",
+                "print",
                 {
                     extend: 'selectAll',
                     className: 'selectall',
@@ -3144,35 +3172,6 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                         e.preventDefault();
                         table.rows({ search: 'applied'}).deselect();
                         table.rows({ search: 'applied'}).select();
-                    }
-                },
-                {
-                    extend: 'copyHtml5',
-                    exportOptions: {
-                        columns: [ 0, ':visible' ]
-                    }
-                },
-                {
-                    extend: 'excelHtml5',
-                    exportOptions: {
-                        columns: [ 0, ':visible' ]
-                    }
-                },
-                {
-                    extend: 'pdfHtml5',
-                    exportOptions: {
-                        columns: [ 0, ':visible' ]
-                    }
-                },
-                'colvis',
-                {
-                    extend: 'print',
-                    text: 'Print all',
-                    exportOptions: {
-                        //columns: [ 0, 1, 5 ],
-                        modifier: {
-                            selected: null
-                        }
                     }
                 },
                 {
@@ -3186,26 +3185,28 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
             ],
             select: {
                 style: 'Single'
+            },
+
+
+            initComplete: function (settings, json) {
+                var footer = $("#newtable tfoot tr");
+                $("#newtable thead").append(footer);
             }
-
         });
-
-        table.columns().every(function() {
-            var that = this;
-
-            $('input', this.header()).on('keyup change', function() {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
         $('#newtable tbody').on('click', 'tr', function () {
             $(this).toggleClass('selected');
         });
 
+        // Apply the search
+        $("#newtable thead").on("keyup", "input", function () {
+            table.column($(this).parent().index())
+                .search(this.value)
+                .draw();
+        });
+
+
     });
+
 </script>
+
 

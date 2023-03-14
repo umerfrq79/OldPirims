@@ -9,6 +9,24 @@
 <head>
 
 </head>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Announcement</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mx-auto" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -520,4 +538,18 @@
 
 <script type="text/javascript">
     loadMyTable('officerReport', true, 15);
+    $(document).ready(function(){
+        $('#myModal').modal('show');
+        }
+
+    )
+    $(window).load(function(){
+        $('#myModal').modal('show');
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        $("#myModal").modal('show');
+    });
 </script>

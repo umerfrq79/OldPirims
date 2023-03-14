@@ -241,3 +241,6 @@ $route['cronJob/registrationRenewal'] = 'cronJob/registrationRenewal';
 $route['cronJob/licenseRenewal'] = 'cronJob/licenseRenewal';
 $route['cronJob/backupDB'] = 'cronJob/backupDB';
 //####################### Cron Job ROUTES #######################
+//new routes
+
+$route['api/Reg/index'] = 'api/RegController/index';

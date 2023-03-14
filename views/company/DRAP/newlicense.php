@@ -119,9 +119,10 @@ if(@$records[0]->countLicense > 0 && $this->roleId == 26 && $myAction == 'add'){
                 </div>
               </form> -->
                                 <table id="<?php echo ($myAction == 'lookup' ? 'newtable' : '') ?>" class="table table-bordered table-striped">
+
                                     <thead>
                                     <tr>
-                                        <th style="width:5%">S.#</th>
+                                        <th>S.#</th>
                                         <th class="text-center d-none">Referrence No.</th>
                                         <?php if($this->roleId == 6 || $this->roleId == 10 || $this->roleId == 14 || $this->roleId == 18 || $this->roleId == 38 || $this->roleId == 43){?>
                                             <th style="width:5%">Company</th>
@@ -273,6 +274,38 @@ if(@$records[0]->countLicense > 0 && $this->roleId == 26 && $myAction == 'add'){
                                     }
                                     ?>
                                     </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th style="width:5%">S.#</th>
+                                        <th class="text-center d-none">Referrence No.</th>
+                                        <?php if($this->roleId == 6 || $this->roleId == 10 || $this->roleId == 14 || $this->roleId == 18 || $this->roleId == 38 || $this->roleId == 43){?>
+                                            <th style="width:5%">Company</th>
+                                            <th class="d-none">NTN</th>
+                                        <?php } ?>
+                                        <th style="width:5%">License Type</th>
+                                        <th class="d-none">License No.</th>
+                                        <th class="d-none">Issue Date</th>
+                                        <th style="width:5%">Renewal Due Date</th>
+                                        <th class="d-none">Last Renewal Date</th>
+                                        <th class="text-center d-none">Queue (Position)</th>
+                                        <?php if($this->roleId == 26){?>
+                                            <th class="text-center d-none">Days To Respond</th>
+                                        <?php } ?>
+                                        <?php if($this->roleId == 6 || $this->roleId == 10 || $this->roleId == 14 || $this->roleId == 18 || $this->roleId == 38 || $this->roleId == 43){?>
+                                            <th style="width:5%">Assigned Officer</th>
+                                            <?php if($this->roleId == 6 || $this->roleId == 10 || $this->roleId == 38 || $this->roleId == 43){?>
+                                                <th style="width:5%">Desk Officer</th>
+                                            <?php } } ?>
+                                        <th style="width:3%">App. Submitted</th>
+                                        <th style="width:3%">Phase</th>
+                                        <th style="width:3%" class="text-center">Stage</th>
+                                        <?php if($this->roleId == 6 || $this->roleId == 10 || $this->roleId == 14 || $this->roleId == 18 || $this->roleId == 38 || $this->roleId == 43){?>
+                                            <th style="width:5%">In Board</th>
+                                        <?php } ?>
+                                        <!-- <th class="text-center">Status</th> -->
+                                        <th style="width:10%" class="text-center">Action</th>
+                                    </tr>
+                                    </tfoot>
                                     <!-- <tfoot>
                 <tr>
                   <th>Rendering engine</th>
@@ -3916,18 +3949,27 @@ if(@$records[0]->countLicense > 0 && $this->roleId == 26 && $myAction == 'add'){
     })
 </script>
 <script>
-
-    $(document).ready(function ($) {
-
-        $('#newtable thead th').each(function() {
+    $(document).ready(function () {
+        //Only needed for the filename of export files.
+        //Normally set in the title tag of your page.
+        document.title = "PIRIMS - New License";
+        // Create search inputs in footer
+        $("#newtable tfoot th").each(function () {
             var title = $(this).text();
             $(this).html('<input type="text" placeholder="Search" />');
         });
-
-
-        var table = $('#newtable').DataTable({
-            dom: 'Blfrtip',
+        // DataTable initialisation
+        var table = $("#newtable").DataTable({
+            dom: '<"dt-buttons"Bf><"clear">lirtp',
+            paging: true,
+            autoWidth: true,
             buttons: [
+                "colvis",
+                "copyHtml5",
+                "csvHtml5",
+                "excelHtml5",
+                "pdfHtml5",
+                "print",
                 {
                     extend: 'selectAll',
                     className: 'selectall',
@@ -3935,35 +3977,6 @@ if(@$records[0]->countLicense > 0 && $this->roleId == 26 && $myAction == 'add'){
                         e.preventDefault();
                         table.rows({ search: 'applied'}).deselect();
                         table.rows({ search: 'applied'}).select();
-                    }
-                },
-                {
-                    extend: 'copyHtml5',
-                    exportOptions: {
-                        columns: [ 0, ':visible' ]
-                    }
-                },
-                {
-                    extend: 'excelHtml5',
-                    exportOptions: {
-                        columns: [ 0, ':visible' ]
-                    }
-                },
-                {
-                    extend: 'pdfHtml5',
-                    exportOptions: {
-                        columns: [ 0, ':visible' ]
-                    }
-                },
-                'colvis',
-                {
-                    extend: 'print',
-                    text: 'Print all',
-                    exportOptions: {
-                        //columns: [ 0, 1, 5 ],
-                        modifier: {
-                            selected: null
-                        }
                     }
                 },
                 {
@@ -3977,25 +3990,26 @@ if(@$records[0]->countLicense > 0 && $this->roleId == 26 && $myAction == 'add'){
             ],
             select: {
                 style: 'Single'
+            },
+
+
+            initComplete: function (settings, json) {
+                var footer = $("#newtable tfoot tr");
+                $("#newtable thead").append(footer);
             }
-
         });
-
-        table.columns().every(function() {
-            var that = this;
-
-            $('input', this.header()).on('keyup change', function() {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
         $('#newtable tbody').on('click', 'tr', function () {
             $(this).toggleClass('selected');
         });
 
+        // Apply the search
+        $("#newtable thead").on("keyup", "input", function () {
+            table.column($(this).parent().index())
+                .search(this.value)
+                .draw();
+        });
+
+
     });
+
 </script>

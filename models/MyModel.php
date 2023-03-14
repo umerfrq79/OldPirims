@@ -3690,12 +3690,13 @@ class myModel extends CI_Model {
 	
     function newregistration($table, $searchText = NULL)
     {
-        $txt = ["test3", "Scotmann Pharmaceuticals", "Shaigan Pharmaceuticals (Pvt) Ltd", "Crystolite", "Rotex Pharma Private Limited", "HIMMEL PHARMACEUTICALS (PVT.) LTD", "Lab Diagnostic Systems (SMC) Pvt. Ltd.", "M/s Amgomed", "Vety Care (Pvt) Ltd.", "Kanel Pharma", "Seraph Pharmaceutical"];
-
-        $txt2=  in_array($_SESSION["match"], $txt);
-        
-        if($txt2==true)
-        {?>
+//        $txt = ["test3", "Scotmann Pharmaceuticals", "Shaigan Pharmaceuticals (Pvt) Ltd", "Crystolite", "Rotex Pharma Private Limited", "HIMMEL PHARMACEUTICALS (PVT.) LTD", "Lab Diagnostic Systems (SMC) Pvt. Ltd.", "M/s Amgomed", "Vety Care (Pvt) Ltd.", "Kanel Pharma", "Seraph Pharmaceutical"];
+//
+//         $txt2=  in_array($_SESSION['match'], $txt);
+//
+//         var_dump($_SESSION);
+//        if($txt2==true)
+//        {?>
 
         <?php
             //    $acid = '0826024268';
@@ -3901,12 +3902,12 @@ class myModel extends CI_Model {
         $result = $query->result();        
         return $result;
         */
-         }
-        else{
-            ?>
-
-            <?php
-        }
+//         }
+//        else{
+//            ?>
+<!---->
+<!--            --><?php
+//        }
 
     }
 
