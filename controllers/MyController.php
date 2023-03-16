@@ -13667,6 +13667,7 @@ class myController extends login
 
     function importregistration($action = NULL, $id = NULL)
     {
+        $abc = $_SESSION['newId'];
         $isLoggedIn = $this->session->userdata('isLoggedIn');
         if (!isset($isLoggedIn) || $isLoggedIn != TRUE) {
             redirect('login');
@@ -13713,8 +13714,6 @@ class myController extends login
                 $myAction = 'update';
             }
         }
-
-
         $table = 'tbl_registration';
         $searchText = $this->input->post('searchText');
         $data['searchText'] = $searchText;
@@ -13789,6 +13788,7 @@ class myController extends login
             $this->loadViews('company/' . $this->companyName . '/' . __FUNCTION__, $this->global, $data, NULL);
         }
         else if ($action == 'edit' && $recordEdit == 1) {
+
             if (!$id) {
                 $this->accessDenied();
                 return;
@@ -14624,6 +14624,9 @@ class myController extends login
             $objPHPExcel->getActiveSheet()->SetCellValue('U' . $rowCount, $record->regFileNo);
             $objPHPExcel->getActiveSheet()->SetCellValue('V' . $rowCount, $record->id);
             $objPHPExcel->getActiveSheet()->SetCellValue('W' . $rowCount, $record->registrationStatus);
+            $objPHPExcel->getActiveSheet()->SetCellValue('X' . $rowCount, $record->regFileNo);
+            $objPHPExcel->getActiveSheet()->SetCellValue('Y' . $rowCount, $record->id);
+            $objPHPExcel->getActiveSheet()->SetCellValue('Z' . $rowCount, $record->registrationStatus);
             //Data Status
             $prodStatus = '';
             if ($record->productStatus == 1) {
@@ -14636,6 +14639,123 @@ class myController extends login
             $objPHPExcel->getActiveSheet()->SetCellValue('X' . $rowCount, $prodStatus);
             $objPHPExcel->getActiveSheet()->SetCellValue('Y' . $rowCount, $record->isPublic);
             $objPHPExcel->getActiveSheet()->SetCellValue('Z' . $rowCount, $record->submissionRemarks);
+
+            $rowCount++;
+        }
+        $filename = "RegisteredProducts-" . date("Y-m-d-H-i-s") . ".xlsx";
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        //$objWriter->save(str_replace(__FILE__,'backup/RegProducts.xlsx',__FILE__));
+        $objWriter->save('php://output');
+
+    }
+
+
+    // new method for generating excel file for user (umer)
+    public function generateExcelfile()
+    {
+        if ($this->roleId <> 53) {
+
+        }
+        // create file name
+        $fileName = 'data-' . time() . '.xlsx';
+        // load excel library
+        $this->load->library('excel');
+        $records = $this->myModel->exportDrugs();
+
+        //$this->load->model('Export_model', 'export');
+        //$listInfo = $this->export->exportList();
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        // set Header
+        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Registration No');
+        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Brand Name');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Reference Unit');
+        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Composition');
+        $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Finished Product Specification');
+        $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Manufacturing Type');
+        $objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Manufacturer(in case of Contract, Import and Source');
+        $objPHPExcel->getActiveSheet()->SetCellValue('H1', 'Company Name & Address');
+        $objPHPExcel->getActiveSheet()->SetCellValue('I1', 'DSL NO/DSL NO');
+        $objPHPExcel->getActiveSheet()->SetCellValue('J1', 'Dosage Form');
+        $objPHPExcel->getActiveSheet()->SetCellValue('K1', 'Route of Administration');
+        $objPHPExcel->getActiveSheet()->SetCellValue('L1', 'Shelf Life');
+        $objPHPExcel->getActiveSheet()->SetCellValue('M1', 'Pack Size & Initial MRP');
+        $objPHPExcel->getActiveSheet()->SetCellValue('N1', 'Reg Date');
+        $objPHPExcel->getActiveSheet()->SetCellValue('O1', 'Product Category');
+        $objPHPExcel->getActiveSheet()->SetCellValue('P1', 'Used For');
+        $objPHPExcel->getActiveSheet()->SetCellValue('Q1', 'Current Dealing Section of PE & R /BE & R');
+        $objPHPExcel->getActiveSheet()->SetCellValue('R1', 'File No');
+        $objPHPExcel->getActiveSheet()->SetCellValue('S1', 'Product Status');
+        $objPHPExcel->getActiveSheet()->SetCellValue('T1', 'Remarks (if any)');
+
+        // set Row
+        $rowCount = 2;
+
+        foreach ($records as $record) {
+
+            $composition_val = '';
+            $manufacturer_val = '';
+            $packsize_val = '';
+            $compositions = $this->myModel->myAjaxAllGet('tbl_registrationinn', 'masterId', $record->id);
+            $packsizes = $this->myModel->myAjaxAllGet('tbl_registrationproposedprice', 'masterId', $record->id);
+            $manufacturers = $this->myModel->myAjaxAllGet('tbl_registrationothermanufacturer', 'masterId', $record->id);
+
+
+            if ($compositions && count($compositions) > 0) {
+                foreach ($compositions as $composition) {
+                    $cunit = null;
+                    if (isset($composition->unitId)) {
+                        $unit = $this->myModel->myAjaxAllGet('tbl_unit', 'id', $composition->unitId);
+                        $cunit = (isset($unit[0]) ? $unit[0]->unit : " - ");
+                    }
+                    $composition_val .= $composition->innManual . '_ ' . $composition->strength . ' ' . $cunit . '- ';
+                }
+            }
+            if ($packsizes && count($packsizes) > 0) {
+                foreach ($packsizes as $packsize) {
+                    $packsize_val .= $packsize->packSize . '_ ' . $packsize->approvedPrice . '- ';
+                }
+            }
+            if ($manufacturers && count($manufacturers) > 0) {
+                foreach ($manufacturers as $manufacturer) {
+                    $mcountry = null;
+                    if (isset($manufacturer->companyCountry)) {
+                        $country = $this->myModel->myAjaxAllGet('tbls_country', 'id', $manufacturer->companyCountry);
+                        $mcountry = (isset($country[0]) ? $country[0]->countryName : " - ");
+                    }
+                    $manufacturer_val .= $manufacturer->role . ': ' . $manufacturer->companyName . ' ' . $manufacturer->companyAddress . ' ' . $mcountry . '; ';
+                }
+            }
+
+            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $record->registrationNo);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $record->approvedName);
+            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $record->refUnit);
+            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $composition_val);
+            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $record->pharmacopeia);
+            $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $record->regType);
+            $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $manufacturer_val);
+            $objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, $record->companyName);
+            $objPHPExcel->getActiveSheet()->SetCellValue('I' . $rowCount, $record->isPublic);
+            $objPHPExcel->getActiveSheet()->SetCellValue('J' . $rowCount, $record->dosageName);
+            $objPHPExcel->getActiveSheet()->SetCellValue('K' . $rowCount, $record->routeOfAdmin);
+            $objPHPExcel->getActiveSheet()->SetCellValue('L' . $rowCount, $record->shelfLife . ' ' . $record->shelfLifeUnit);
+            $objPHPExcel->getActiveSheet()->SetCellValue('M' . $rowCount, $packsize_val);
+            $objPHPExcel->getActiveSheet()->SetCellValue('N' . $rowCount, date('d-m-Y', strtotime(date('d-m-Y H:i', strtotime($record->issueDateManual)))));
+            $objPHPExcel->getActiveSheet()->SetCellValue('O' . $rowCount, $record->productCategory);
+            $objPHPExcel->getActiveSheet()->SetCellValue('P' . $rowCount, $record->usedFor);
+            $objPHPExcel->getActiveSheet()->SetCellValue('Q' . $rowCount, $record->dealingsection);
+            $objPHPExcel->getActiveSheet()->SetCellValue('R' . $rowCount, $record->regFileNo);
+            $objPHPExcel->getActiveSheet()->SetCellValue('S' . $rowCount, $record->registrationStatus);
+            $objPHPExcel->getActiveSheet()->SetCellValue('T' . $rowCount, $record->isPublic);
+
+            //Data Status
+            $prodStatus = '';
+
+
 
             $rowCount++;
         }

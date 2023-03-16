@@ -55,6 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 //####################### BASE ROUTES #######################
 $route['downloadRegisteredProducts'] = 'myController/generateExcel';
+$route['downloadCompanyRegisteredProducts'] = 'myController/generateExcelfile';
 $route['drugSearch'] = 'login/registeredDrugSearch';
 $route['drugs'] = 'login/drugSearch';
 $route['drugDetails/(:any)'] = 'login/registeredDrug/$1';
@@ -142,6 +143,22 @@ $route['dashboardSuper'] = 'myController/dashboardSuper';
 
 $route['uploaddata/(:any)'] = "myController/uploaddata/$1";
 
+//$route['customer/display_medicine_prescription'] = 'customer/display_medicine_prescription/(:any)';
+//
+//$route["display_medicine_prescription/([0-9]+)/(.*)"] ="customer/display_medicine_prescription";
+
+
+
+//$route['importregistration/edit/:num'] = 'myController/importregistration';
+//
+//$route['importregistration/edit/([0-9]+)/(.*)'] = 'myController/importregistration';
+
+//$route['importregistration/edit/(:any)'] = 'MyController/importregistration/$id';
+
+
+
+
+
 require_once(BASEPATH .'database/DB.php');
 $this->db =& DB();
 
@@ -186,9 +203,17 @@ if($count > 0){
 
 // $route['licensevariance/(:any)'] = 'myController/licensevariance/$1';
 // $route['licensevariance/(:any)/(:num)'] = 'myController/licensevariance/$1/$2';
-
+//$route['importregistration/(:num)']['edit'] = 'importregistration/edit/$1';
+//
+//$route['importregistration/(:num)']['edit'] = 'importregistration/edit/$1';
+//
+//$route['importregistration/edit/(:num)'] = 'importregistration/edit/$1';
+//
 // $route['newregistration/(:any)'] = 'myController/newregistration/$1';
 // $route['newregistration/(:any)/(:num)'] = 'myController/newregistration/$1/$2';
+//
+//$route['importregistration/(:any)'] = 'myController/newregistration/$1';
+//$route['importregistration/(:any)/(:num)'] = 'myController/newregistration/$1/$2';
 
 // $route['registrationrenewal/(:any)'] = 'myController/registrationrenewal/$1';
 // $route['registrationrenewal/(:any)/(:num)'] = 'myController/registrationrenewal/$1/$2';

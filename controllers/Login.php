@@ -262,6 +262,7 @@ class login extends CI_Controller {
 												'userEmail'=>$res->email,
 												'userName'=>$res->userName,
 												'token'=>$data->auth->token,
+                                                'newId'=>$data->account->AccountId,
 												'authorizationType'=>$data->auth->authorizationType,
 												'password'=>$res->password,
 												'plainPassword'=>$password,

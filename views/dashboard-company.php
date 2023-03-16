@@ -43,13 +43,13 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">NOTICE TO PHARMACEUTICAL / BIOLOGICAL MANUFACTURERS AND IMPORTERS</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">NOTICE TO PHARMACEUTICAL / BIOLOGICAL MANUFACTURERS AND IMPORTERS (Dated 13-03-2022)</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p  style="text-align:justify; font-weight: lighter; font-size: large"> Pharmaceutical Industry is hereby informed through this notice that Drug Regulatory Authority of Pakistan (DRAP) has deployed an online application management system namely Pakistan Integrated Regulatory Information Management System (PIRIMS) for performance of various regulatory functions.<br><br>
 
-                                    All the Registration Holders are hereby directed to update the finished product specifications and validated testing procedures i.e. Pharmacopoeial or in case of non-availability in any pharmacopeia, Innovator / Manufacturer Specification,  in the corresponding product details in PIRIMS portal. The portal  to perform the above-saidactivity will remain accessible for thirty days after publication of this notice and afterwards, no request shall be entertained. <strong>It is further clarified that after the lapse of the due time for above-said activity, necessary regulatory fee may apply.</strong><br><br>
+                                    All the Registration Holders are hereby directed to update the finished product specifications and validated testing procedures  i.e. Pharmacopoeial or in case of non-availability in any pharmacopeia, Innovator / Manufacturer Specification,  in the corresponding product details in PIRIMS portal <strong>( Goto New Registration -> Edit Product -> Finished Product Specifications)</strong>. The portal  to perform the above-saidactivity will remain accessible for thirty days after publication of this notice and afterwards, no request shall be entertained. <strong>It is further clarified that after the lapse of the due time for above-said activity, necessary regulatory fee may apply.</strong><br><br>
 
                                     Registration holders may approach Data Management Cell (DMC) of Pharmaceutical Evaluation & Registration Division for guidance through  <a href="mailto:dmc@dra.gov.pk" >email </a> (dmc@dra.gov.pk) with regards to guidance for procedures and requirements etc.<br><br>
 
@@ -61,7 +61,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="adduser()">Ok! Acknowledged</button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok! Acknowledged</button>
                             </div>
                         </div>
                     </div>

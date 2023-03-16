@@ -4878,6 +4878,7 @@ class myModel extends CI_Model {
 
     function importregistration($table, $searchText = NULL)
     {
+        $abc = $_SESSION['newId'];
         return array();
         die();
         $sql = "SELECT
@@ -4976,6 +4977,7 @@ class myModel extends CI_Model {
                 )
             ) 
             AND `BaseTbl`.`registrationStatus` != '' 
+            AND `BaseTbl`.`companyAccountId` =  '.$abc.'
             AND `BaseTbl`.`registrationStatus` NOT IN (
                 'Draft'
             ) 
@@ -5228,6 +5230,21 @@ class myModel extends CI_Model {
         return $query->result();
 
     }
+
+
+    // new method added by me for company download (umer)
+    function CompanyAjaxAllGet($table, $column = null, $val = null)
+    {
+
+        $this->db->select('BaseTbl.*');
+        $this->db->from($table.' as BaseTbl');
+        $this->db->where('BaseTbl.isDeleted', 0);
+        //$this->db->where('BaseTbl.status', 'Active');
+        if(isset($column) && $column != null )
+            $this->db->where($column, $val);
+        $query = $this->db->get();
+        return $query->result();
+    }
     function amcRegisteredBrands($molecule)
     {
         $this->db->select('BaseTbl.*,Company.companyName,Company.companyAddress');
@@ -5258,6 +5275,7 @@ class myModel extends CI_Model {
         return $query->result();
     }
     function exportDrugs(){
+        $abc = $_SESSION['newId'];
         $sql = 'SELECT
         optimizedSub1.*,
 	    (SELECT
@@ -5354,11 +5372,127 @@ class myModel extends CI_Model {
         WHERE
             `BaseTbl`.`isDeleted` = 0
             AND `BaseTbl`.`isexport` = 0
+             AND `BaseTbl`.`companyAccountId` =  '.$abc.'
+    
         ORDER BY
             BaseTbl.id DESC 
              )AS optimizedSub1';
         $query = $this->db->query($sql);
         return $query->result();
+    }
+
+
+
+    function exportDrugsFile(){
+     $abc = $_SESSION['newId'];
+        $sql = "SELECT
+        optimizedSub1.*,
+		
+        (SELECT
+            tbls_user.userName 
+        FROM
+            tbl_registrationhistory 
+        LEFT JOIN
+            tbls_user 
+                ON tbls_user.id = tbl_registrationhistory.forwardedTo 
+        WHERE
+            tbl_registrationhistory.masterId = optimizedSub1.BaseTbl_id 
+        ORDER BY
+            tbl_registrationhistory.id DESC LIMIT 1) AS assignedOfficer,
+			
+			
+			
+        (SELECT
+            `Company`.`companyName` 
+        FROM
+            `tbls_company` AS `Company` 
+        WHERE
+            `Company`.`companyUniqueNo` = optimizedSub1.BaseTbl_companyAccountId LIMIT 1) AS `companyName`,
+        (SELECT
+            `Company`.`companyUniqueNo` 
+        FROM
+            `tbls_company` AS `Company` 
+        WHERE
+            `Company`.`companyUniqueNo` = optimizedSub1.BaseTbl_companyAccountId LIMIT 1) AS `companyUniqueNo`,
+        (SELECT
+            `Company`.`companyNTN` 
+        FROM
+            `tbls_company` AS `Company` 
+        WHERE
+            `Company`.`companyUniqueNo` = optimizedSub1.BaseTbl_companyAccountId LIMIT 1) AS `companyNTN`,
+        (SELECT
+            `Company`.`dslNo` 
+        FROM
+            `tbls_company` AS `Company` 
+        WHERE
+            `Company`.`companyUniqueNo` = optimizedSub1.BaseTbl_companyAccountId LIMIT 1) AS `dslNo`,
+        (SELECT
+            `RegistrationType`.`registrationType` 
+        FROM
+            `tbl_registrationtype` AS `RegistrationType` 
+        WHERE
+            `RegistrationType`.`id` = optimizedSub1.BaseTbl_registrationTypeId LIMIT 1) AS `registrationType`,
+        (SELECT
+            `RegistrationType`.`registrationSubType` 
+        FROM
+            `tbl_registrationtype` AS `RegistrationType` 
+        WHERE
+            `RegistrationType`.`id` = optimizedSub1.BaseTbl_registrationTypeId LIMIT 1) AS `registrationSubType`,
+        (SELECT
+            `ProductOrigin`.`productOrigin` 
+        FROM
+            `tbl_productorigin` AS `ProductOrigin` 
+        WHERE
+            `ProductOrigin`.`id` = optimizedSub1.BaseTbl_productOriginId LIMIT 1) AS `productOrigin`,
+        (SELECT
+            `ProductCategory`.`productCategory` 
+        FROM
+            `tbl_productcategory` AS `ProductCategory` 
+        WHERE
+            `ProductCategory`.`id` = optimizedSub1.BaseTbl_productCategoryId LIMIT 1) AS `productCategory`,
+        (SELECT
+            `UsedFor`.`usedFor` 
+        FROM
+            `tbl_usedfor` AS `UsedFor` 
+        WHERE
+            `UsedFor`.`id` = optimizedSub1.BaseTbl_usedForId LIMIT 1) AS `usedFor` 
+    FROM
+        (SELECT
+            `BaseTbl`.*,
+            BaseTbl.id AS BaseTbl_id,
+            `BaseTbl`.`companyAccountId` AS BaseTbl_companyAccountId,
+            `BaseTbl`.`registrationTypeId` AS BaseTbl_registrationTypeId,
+            `BaseTbl`.`productOriginId` AS BaseTbl_productOriginId,
+            `BaseTbl`.`productCategoryId` AS BaseTbl_productCategoryId,
+            `BaseTbl`.`usedForId` AS BaseTbl_usedForId 
+        FROM
+            `tbl_registration` AS `BaseTbl` 
+        WHERE
+            `BaseTbl`.`isDeleted` = 0
+            AND `BaseTbl`.`isexport` = 0 
+            AND (
+                (
+                    `BaseTbl`.`status` = 'Active'
+                ) 
+                OR (
+                    `BaseTbl`.`status` IS NULL
+                ) 
+                OR (
+                    `BaseTbl`.`status` = ''
+                )
+            ) 
+            AND `BaseTbl`.`isCompany` = 1
+            AND `BaseTbl`.`isunderprocess` = 0
+            AND `BaseTbl`.`companyAccountId` = ". $abc ."
+            
+        ORDER BY
+            BaseTbl.id DESC 
+             )AS optimizedSub1
+             ";
+
+        $query = $this->db->query($sql);
+        return $query->result();
+
     }
     function newexportregistration($table, $searchText = NULL)
     {

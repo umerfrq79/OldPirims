@@ -14,10 +14,14 @@ if(explode('/', $_SERVER['REQUEST_URI'])[2] == $pageTitle[0]->url){
 if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
     $myAction = explode('/', $_SERVER['REQUEST_URI'])[2];
 }
+
+if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
+    $myAction = explode('/', $_SERVER['REQUEST_URI'])[2];
+}
+
 ?>
 <head>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-
+   
     <style>
         .suggestbox > ul{
             background-color:#eee;
@@ -460,10 +464,11 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                         </div> -->
                     </div>
                     <!-- /.card-header -->
-                    <?php if($this->roleId == 26 && $myAction =='edit'){ ?>
+                    <?php if($this->roleId == 26 && $myAction =='edit'){?>
+                        <?php if( $myAction == 'edit'){echo '<form id="myForm" action="'.base_url().$pageTitle[0]->url.'/submit" enctype="multipart/form-data" method="post" autocomplete="off" accept-charset="utf-8">';}?>
                         <div class="card-body cardBodyTransaction">
                             <div class="row">
-
+                         <h2>  <span class="badge badge-success">Please add below Product Specifications (if any) and Testing Method of Product (if any)</span></h2>
                                 <div class="col-md-12">
                                     <div class="card card-primary card-outline">
                                         <div class="card-header">
@@ -730,30 +735,24 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                     </div>
                                 </div>
 
-                                <div class="col-md-9">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <?php $label = 'Testing Method'; ?>
-                                        <label><?php echo $label; ?></label>
+                                        <label><?php echo $label; ?> <i>[<font style="color: #F44336;">File Format</font><font style="color: #3f51b5;"> (*.docx, *.doc, *.PDF)</font><font style="color: #F44336;"> Max. File Size</font><font style="color: #3f51b5;"> 15 MB</font>]</i></label>
                                         <?php $column = 'testingmethod'; ?>
-                                        <textarea name="<?php echo @$column; ?>"  id="<?php echo @$column; ?>" class="form-control" rows="10" >
-                                            <?php echo @$recordsEdit[0]->$column; ?>
-                                        </textarea>
-                                    </div>
-                                </div>
-                        <br>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <?php $label = 'Appearance/Color Description'; ?>
-                                        <label><?php echo $label; ?>: </label>
+                                        <div class="custom-file">
+                                            <input type="hidden" id="<?php echo @$column; ?>Hidden" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>">
+                                            <input <?php if($myAction == 'view'){echo 'disabled';}?> isuploaded="<?php echo @$recordsEdit[0]->$column!= null?1:0; ?>" type="file" id="<?php echo @$column; ?>" name="<?php echo @$column; ?>" value="<?php echo @$recordsEdit[0]->$column; ?>" class="custom-file-input1 required">
+                                            <!-- <label class="custom-file-label" for="<?php echo @$column; ?>">Choose file</label> -->
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-9">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <?php $column =  'descriptionMethod'; ?>
-                                        <textarea name="<?php echo @$column; ?>"  id="<?php echo @$column; ?>" class="form-control" rows="2" >
-                                            <?php echo @$recordsEdit[0]->$column; ?>
-                                        </textarea>
+                                        <label><?php echo $label; ?> Link</label>
+                                        <br>
+                                        <a <?php if(!@$recordsEdit[0]->$column){ echo 'disabled';} ?> <?php if(@$recordsEdit[0]->$column){ echo 'href="'.base_url().'uploads/company/'.$_SESSION['newId'].'/docs/'.@$recordsEdit[0]->$column.'"';} ?> target="_blank" class="btn btn-success <?php if(!@$recordsEdit[0]->$column){ echo 'disabled';} ?>"><i class="fa fa-file"></i></a>
                                     </div>
                                 </div>
 
@@ -2178,40 +2177,31 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
     $(document).ready(function() {
         var selValue = $("#pharmacopeiaId").val();
         document.getElementById('pharmacopeiaId').disabled = selValue=='' || selValue=='0' || selValue=='26' ? false : true;
-        initTestMethodRich(selValue);
-
+        if(selValue==23 ||selValue== 27||selValue== 28||selValue== 32||selValue==22)
+        {
+            $("#testingmethod").show();
+       }
+        else{
+            $("#testingmethod").hide();
+        }
         $("#pharmacopeiaId").on("change",function(){
-
-            var selValue = $("#pharmacopeiaId").val();
-            initTestMethodRich(selValue);
-        });
-
-        function initTestMethodRich(selValue){
-            if(['','0','23','27','28','32','22','26'].includes(selValue))
-            {
-                if(!$("#testingmethod").is(':visible')) $("#testingmethod").show();
-                if(!$("#descriptionMethod").is(':visible')) $("#descriptionMethod").show();
-                tinymce.init({selector: '#descriptionMethod'});
-
-                tinymce.init({
-                    selector: '#testingmethod',
-                    plugins: [
-                        'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
-                        'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
-                        'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
-                    ],
-                    toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
-                        'alignleft aligncenter alignright alignjustify | ' +
-                        'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
-                });
+             var selValue = $("#pharmacopeiaId").val();
+            if(['','0','23','27','28','32','22','26'].includes(selValue)) {
+                 $("#testingmethod").show();
             }
             else{
-                tinymce.remove("#testingmethod");
                 $("#testingmethod").hide();
-                tinymce.remove("#descriptionMethod");
-                $("#descriptionMethod").hide();
-            }
-        }
+                    }
+        });
     });
 </script>
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    $(document).ready(function() {
+        $("input[type='file']").on("change", function () {
+            if(this.files[0].size > 50000000) {
+                alert("Please upload file less than 50MB. Thanks!!");
+                $(this).val('');
+            }
+        )};
+    )};
+</script>

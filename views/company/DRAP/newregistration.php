@@ -76,6 +76,12 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                             <div class="card-header">
                                 <h3 class="card-title">Lookup</h3>
                                 <div class="card-tools">
+
+                                    <?php
+//                                    echo '<a target="_blank" href="'.base_url().'downloadRegisteredProducts'.'" class="btn btn-info mr-5"><i class="fa fa-plus"></i> Download Registered Products</a>';
+                                    echo '<a target="_blank" href="'.base_url().'downloadCompanyRegisteredProducts'.'" class="btn btn-info mr-5"><i class="fa fa-plus"></i> Download Excel File</a>';
+
+                                    ?>
                                     <?php if($this->roleId == 26){?>
                                         <!--
                   <a class="btn btn-primary" href="<?php echo base_url().$pageTitle[0]->url.'/add' ?>"><i class="fa fa-plus"></i> <?php echo $pageTitle[0]->friendlyName; ?></a>
@@ -100,47 +106,31 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                     <thead>
                                     <tr>
                                         <th>S.#</th>
-                                        <th class="text-center">Referrence No.</th>
+
                                         <?php if($this->roleId == 7 || $this->roleId == 11 || $this->roleId == 15 || $this->roleId == 19 || $this->roleId == 39 || $this->roleId == 44 || $this->roleId == 45){?>
                                             <th>Company</th>
                                             <th>NTN</th>
                                         <?php } ?>
                                         <?php if($this->companySubCategory <> 'Importer'){?>
-                                            <th>Establishment License</th>
-                                            <th>License No.</th>
                                         <?php } ?>
 
                                         <?php if($this->companySubCategory == 'Importer'){?>
                                             <th>DSL</th>
                                         <?php } ?>
                                         <th>Registration No.</th>
-                                        <th>Approved Name</th>
-                                        <th>Registration Type</th>
-                                        <th>Registration Form Type</th>
-                                        <th>Product Origin</th>
-                                        <th>Product Category</th>
-                                        <th>Used For</th>
-
-                                        <th>Issue Date</th>
-                                        <th>Renewal Due Date</th>
-                                        <th>Last Renewal Date</th>
-                                        <th class="text-center">Queue (Position)</th>
-                                        <th>Priority Reason</th>
-                                        <th class="text-center">Priority</th>
-                                        <?php if($this->roleId == 26){?>
-                                            <th class="text-center">Days To Respond</th>
-                                        <?php } ?>
+                                        <th>Brand Name</th>
+                                        <th class="text-center">Action</th>
+                                         <?php if($this->roleId == 26){?>
+                                          <?php } ?>
                                         <?php if($this->roleId == 7 || $this->roleId == 11 || $this->roleId == 15 || $this->roleId == 19 || $this->roleId == 39 || $this->roleId == 44 || $this->roleId == 45){?>
                                             <th>Assigned Officer</th>
                                             <th>Days Left (Evaluation)</th>
                                         <?php } ?>
-                                        <th class="text-center">Stage</th>
                                         <?php if($this->roleId == 7 || $this->roleId == 11 || $this->roleId == 15 || $this->roleId == 19 || $this->roleId == 39 || $this->roleId == 44 || $this->roleId == 45){?>
                                             <th>Added In Agenda</th>
                                         <?php } ?>
                                         <!-- <th class="text-center">Status</th> -->
-                                        <th class="text-center">Action</th>
-                                    </tr>
+                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php $sn=1; ?>
@@ -153,44 +143,8 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                             ?>
                                             <tr <?php if(!(in_array($this->session->userdata('userId'), $seenBy))){echo "style='background-color: #92a1ad2e !important; font-weight:bold;'";} ?>>
                                                 <td><?=$sn?>.</td>
-                                                <td class="text-center"><?php echo $record->id; ?></td>
-                                                <?php if($this->roleId == 7 || $this->roleId == 11 || $this->roleId == 15 || $this->roleId == 19 || $this->roleId == 39 || $this->roleId == 44 || $this->roleId == 45){?>
-                                                    <td><?php echo $record->companyName; ?></td>
-                                                    <td><?php echo $record->companyNTN; ?></td>
-                                                <?php } ?>
-                                                <?php if($this->companySubCategory <> 'Importer'){?>
-                                                    <td><?php echo isset($record->licenseType)?$record->licenseType.' &mdash; '.$record->licenseSubType:''; ?></td>
-                                                    <td><?php echo isset($record->licenseNoManual)?$record->licenseNoManual:''; ?></td>
-                                                <?php } ?>
-                                                <?php if($this->companySubCategory == 'Importer'){?>
-                                                    <td><?php echo $record->dslNo; ?></td>
-                                                <?php } ?>
-                                                <td><?php echo $record->registrationNo; ?></td>
+                                               <td><?php echo $record->registrationNo; ?></td>
                                                 <td><?php echo $record->approvedName; ?></td>
-                                                <td><?php echo $record->registrationType.' &mdash; '.$record->registrationSubType; ?></td>
-                                                <td><?php echo $record->registrationFormType; ?></td>
-                                                <td><?php echo $record->productOrigin; ?></td>
-                                                <td><?php echo $record->productCategory; ?></td>
-                                                <td><?php echo $record->usedFor; ?></td>
-                                                <td><?php echo isset($record->issueDateManual)?date('d-M-y', strtotime(date('d-M-y H:i', strtotime($record->issueDateManual)))):''; ?></td>
-                                                <td><?php echo isset($record->validTill)?date('d-M-y', strtotime(date('d-M-y H:i', strtotime($record->validTill)))):''; ?></td>
-                                                <td><?php echo $record->lastRenewalDateManual; ?></td>
-                                                <td class="text-center"><?php if($record->registrationStatus == 'Submitted'){if($record->queuePosition <> 0){echo $record->queuePosition;}else{echo 'Now Serving';}}else{echo '';} ?></td>
-                                                <td><?php echo $record->remarks; ?></td>
-                                                <td class="text-center"><?php if($record->isPriority == 1){echo '<i class="icon fa fa-warning text-red"></i>';} ?></td>
-                                                <?php if($this->roleId == 26){?>
-                                                    <td class="text-center"><?php //echo $record->lastRenewalDate; ?></td>
-                                                <?php } ?>
-                                                <?php if($this->roleId == 7 || $this->roleId == 11 || $this->roleId == 15 || $this->roleId == 19 || $this->roleId == 39 || $this->roleId == 44 || $this->roleId == 45){?>
-                                                    <td><?php echo $record->assignedOfficer; ?></td>
-                                                    <td class="text-center"><?php //echo $record->lastRenewalDate; ?></td>
-                                                <?php } ?>
-                                                <td class="text-center">
-                                                    <b><h4><span class='badge bg-<?php if($record->registrationStatus == 'Draft'){echo 'warning';} elseif($record->registrationStatus == 'Submitted' || $record->registrationStatus == 'Screening' || $record->registrationStatus == 'Under R and I'){echo 'info';} elseif($record->registrationStatus == 'Received By DRAP' || $record->registrationStatus == 'Under Review Stage 1' || $record->registrationStatus == 'Review Complete' || $record->registrationStatus == 'Under Inspection' || $record->registrationStatus == 'Post Inspection Process' || $record->registrationStatus == 'Under Board Stage 2' || $record->registrationStatus == 'Post Board Process'){echo 'primary';} elseif($record->registrationStatus == 'Referred Back To Company (Editable)' || $record->registrationStatus == 'Referred Back To Company (Locked)'){echo 'default';} elseif($record->registrationStatus == 'Deferred and Closed'){echo 'danger';} elseif($record->registrationStatus == 'Recommended By Board Stage 3' || $record->registrationStatus == 'Under Pricing' || $record->registrationStatus == 'Pricing Complete' || $record->registrationStatus == 'Approved'){echo 'success';} ?>'><?php echo $record->registrationStatus; ?></span></h4></b>
-                                                </td>
-                                                <?php if($this->roleId == 7 || $this->roleId == 11 || $this->roleId == 15 || $this->roleId == 19 || $this->roleId == 39 || $this->roleId == 44 || $this->roleId == 45){?>
-                                                    <td class="text-center"><?php if($record->discussInBoard == 1){echo 'Yes';} if($record->discussInBoard == 0){echo 'No';} ?></td>
-                                                <?php } ?>
                                                 <td class="text-center widthMaxContent">
                                                     <div class="btn-group">
                                                         <div class="btn-group-prepend">
