@@ -269,3 +269,5 @@ $route['cronJob/backupDB'] = 'cronJob/backupDB';
 //new routes
 
 $route['api/Reg/index'] = 'api/RegController/index';
+
+$route['downloadLicSection'] = 'myController/LicGenerateXls';

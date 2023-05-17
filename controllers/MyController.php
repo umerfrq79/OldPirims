@@ -27,6 +27,9 @@ class myController extends login
         parent::__construct();
         $this->isLoggedIn1();
     }
+    public function __destruct() {
+        $this->db->close();
+    }
 
     public function index()
     {
@@ -261,7 +264,7 @@ class myController extends login
         if ($moduleName == 'city') {
             $filename = $_FILES['attachment']['tmp_name'];
             $allowedFileTypes = array('application/vnd.ms-excel', 'text/csv');
-            if ($_FILES['attachment']['size'] <= 5000000) {
+            if ($_FILES['attachment']['size'] <= 50000000) {
                 if (in_array($_FILES['attachment']['type'], $allowedFileTypes)) {
                     $file = fopen($filename, 'r');
                     $row = 0;
@@ -916,6 +919,9 @@ class myController extends login
             return;
         }
     }
+
+
+
 
 
     function newlicense($action = NULL, $id = NULL)
@@ -12699,7 +12705,6 @@ class myController extends login
     function importlicense($action = NULL, $id = NULL)
     {
 
-
         $isLoggedIn = $this->session->userdata('isLoggedIn');
         if (!isset($isLoggedIn) || $isLoggedIn != TRUE) {
             redirect('login');
@@ -13672,6 +13677,17 @@ class myController extends login
         if (!isset($isLoggedIn) || $isLoggedIn != TRUE) {
             redirect('login');
         }
+
+//        $abc = $_SESSION['newId'];
+//        $data['companyAccountId']= $this->myModel->accountIdGet();
+//        $xyz = $data['companyAccountId'];
+//        if($abc != $xyz)
+//        {
+//            $this->accessDenied();
+//            return;
+//        }
+
+
         $found = false;
         $rolePage = $this->loginModel->rolePageGet($this->roleId);
         if (!empty($rolePage)) {
@@ -13788,8 +13804,17 @@ class myController extends login
             $this->loadViews('company/' . $this->companyName . '/' . __FUNCTION__, $this->global, $data, NULL);
         }
         else if ($action == 'edit' && $recordEdit == 1) {
-
             if (!$id) {
+                $this->accessDenied();
+                return;
+            }
+            $xyz = $this->myModel->accountIdGet($id);
+
+            //turnary operator
+            $gated = count($xyz) > 0 ? $xyz[0]->companyAccountId : '';
+
+            if($_SESSION['newId'] != $gated)
+            {
                 $this->accessDenied();
                 return;
             }
@@ -13806,6 +13831,16 @@ class myController extends login
         }
         else if ($action == 'view' && $recordView == 1) {
             if (!$id) {
+                $this->accessDenied();
+                return;
+            }
+            $xyz = $this->myModel->accountIdGet($id);
+
+            //turnary operator
+            $gated = count($xyz) > 0 ? $xyz[0]->companyAccountId : '';
+
+            if($_SESSION['newId'] != $gated)
+            {
                 $this->accessDenied();
                 return;
             }
@@ -14401,6 +14436,89 @@ class myController extends login
         );
         echo json_encode($output);
     }
+
+    public function LicGenerateXls()
+    {
+
+        // create file name
+        $fileName = 'data-' . time() . '.xlsx';
+        // load excel library
+        $this->load->library('excel');
+        $records = $this->myModel->exportSection();
+
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        // set Header
+        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'License Id');
+        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'License Number');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Section Name');
+        // set Row
+        $rowCount = 2;
+
+        foreach ($records as $record) {
+
+            $section = $this->myModel->myAjaxAllGet('tbl_licensesection', 'masterId', $record->id);
+            $licNos = $this->myModel->myAjaxAllGet('tbl_license', 'id', $record->masterId);
+
+            $licNo_val = '';
+
+            if ($licNos)
+                foreach ($licNos as $licNo) {
+                    $licNo_val.= $licNo->licenseNoManual . ' ';
+                }
+
+
+            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $record->id);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $licNo_val);
+            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $record->sectionId);
+            //Data Status
+
+            $sectionId = '';
+            if ($record->sectionId == 66) {
+                $sectionId = "Tablet";
+            } else if ($record->sectionId == 2) {
+                $sectionId = "AMPOULE";
+            } else if ($record->sectionId == 3) {
+                $sectionId = "AMPOULE COMPACT LINE";
+            }
+            else if ($record->sectionId == 4) {
+                $sectionId = "ASEPTIC CONDITIONS OF EYEOINTMENTS, EYE-DROPS, EYE-LOTIONS AND OTHER USE";
+            }
+            else if ($record->sectionId == 3) {
+                $sectionId = "AMPOULE COMPACT LINE";
+            }
+            else if ($record->sectionId == 3) {
+                $sectionId = "AMPOULE COMPACT LINE";
+            }
+            else if ($record->sectionId == 3) {
+                $sectionId = "AMPOULE COMPACT LINE";
+            }
+            else if ($record->sectionId == 3) {
+                $sectionId = "AMPOULE COMPACT LINE";
+            }
+            else if ($record->sectionId == 3) {
+                $sectionId = "AMPOULE COMPACT LINE";
+            }
+            else if ($record->sectionId == 3) {
+                $sectionId = "AMPOULE COMPACT LINE";
+            }
+            else if ($record->sectionId == 3) {
+                $sectionId = "AMPOULE COMPACT LINE";
+            }
+
+            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $sectionId);
+            $rowCount++;
+        }
+        $filename = "RegisteredProducts-" . date("Y-m-d-H-i-s") . ".xlsx";
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+
+    }
+
 
     public function generateXls()
     {
@@ -16898,7 +17016,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_1']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_1']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_1']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -16916,7 +17034,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_2']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_2']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_2']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -16934,7 +17052,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_3']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_3']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_3']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -16952,7 +17070,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_4']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_4']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_4']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -16970,7 +17088,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_5']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_5']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_5']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -16988,7 +17106,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_6']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_6']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_6']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -17006,7 +17124,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_7']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_7']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_7']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -17024,7 +17142,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_7_3']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_7_3']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_7_3']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -17042,7 +17160,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_4_2']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_4_2']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_4_2']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -17060,7 +17178,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachment2_3_S_1_2']['size'] <= 5000000){
+        if($_FILES['attachment2_3_S_1_2']['size'] <= 50000000){
             if(in_array($_FILES['attachment2_3_S_1_2']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -17078,7 +17196,7 @@ class myController extends login
         $fullpath = $path.$filename.'.'.$ext;
         $filepath = $filename.'.'.$ext;
         $allowedFileTypes = array('image/jpeg', 'image/png', 'application/pdf');
-        if($_FILES['attachmentStructuralElucidation']['size'] <= 5000000){
+        if($_FILES['attachmentStructuralElucidation']['size'] <= 50000000){
             if(in_array($_FILES['attachmentStructuralElucidation']['type'], $allowedFileTypes)){
                 move_uploaded_file($imgtmpname,$fullpath);
                 if($ext <> ''){
@@ -17997,4 +18115,5 @@ class myController extends login
 
 
 }
+
 

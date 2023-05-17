@@ -1337,14 +1337,14 @@ class loginModel extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
-    function getuserRecord($userid)
+    function getuserRecord($userId)
     {
-        $this->db->select('BaseTbl.*,RoleUser.department,RoleUser.designation');
+        $this->db->select('BaseTbl.*, BaseTbl.userName, RoleUser.department, RoleUser.designation');
         $this->db->from('tbls_user as BaseTbl');
         $this->db->join('tbls_role as RoleUser','RoleUser.id = BaseTbl.roleId','left');
         $this->db->where('BaseTbl.isDeleted', 0);
         //$this->db->where('BaseTbl.status', 'Active');
-        $this->db->where('BaseTbl.id', $userid);
+        $this->db->where('BaseTbl.roleId', $userId);
         $query = $this->db->get();
         return $query->result();
     }

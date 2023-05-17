@@ -768,6 +768,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                 <option <?php echo @$recordsEdit[0]->$column == 1?'selected':''; ?> value="1">Verified</option>
                                                 <option <?php echo @$recordsEdit[0]->$column == 2?'selected':''; ?> value="2">Un-Verified</option>
                                                 <option <?php echo @$recordsEdit[0]->$column == 3?'selected':''; ?> value="3">Provisionally Verified</option>
+                                                <option <?php echo @$recordsEdit[0]->$column == 4?'selected':''; ?> value="4">Under Evaluation</option>
 
                                             </select>
                                         </div>
@@ -1514,6 +1515,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                                                 <option <?php echo @$recordsEdit[0]->$column == 1?'selected':''; ?> value="1">Verified</option>
                                                 <option <?php echo @$recordsEdit[0]->$column == 2?'selected':''; ?> value="2">Un-Verified</option>
                                                 <option <?php echo @$recordsEdit[0]->$column == 3?'selected':''; ?> value="3">Provisionally Verified</option>
+                                                <option <?php echo @$recordsEdit[0]->$column == 4?'selected':''; ?> value="4">Under Evaluation</option>
 
                                             </select>
                                         </div>
@@ -2195,13 +2197,13 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
         });
     });
 </script>
-<script>
-    $(document).ready(function() {
-        $("input[type='file']").on("change", function () {
-            if(this.files[0].size > 50000000) {
-                alert("Please upload file less than 50MB. Thanks!!");
-                $(this).val('');
-            }
-        )};
-    )};
-</script>
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        $("input[type='file']").on("change", function () {-->
+<!--            if(this.files[0].size > 50000000) {-->
+<!--                alert("Please upload file less than 50MB. Thanks!!");-->
+<!--                $(this).val('');-->
+<!--            }-->
+<!--        )};-->
+<!--    )};-->
+<!--</script>-->

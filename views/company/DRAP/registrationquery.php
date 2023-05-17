@@ -109,7 +109,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                   <?php
                   if(!empty($records))
                   {
-                      $CI =& get_instance();
+                      $CI = & get_instance();
                       foreach($records as $record)
                       {
                         $seenBy = explode(",",$record->seenBy);
@@ -123,8 +123,7 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                     <td><?php echo $record->updateddate; ?></td>
                       <?php
                       if($this->roleId == 26){
-                          $u_info = $CI->loginModel->getuserRecord($record->officerid);
-
+                          $u_info[] = $CI->loginModel->getuserRecord($record->officerid);
                           ?>
                           <td class="text-center">
                               <?php echo $u_info[0]->userName.'<br>'.$u_info[0]->designation.' '.$u_info[0]->department; ?>

@@ -263,6 +263,7 @@ class login extends CI_Controller {
 												'userName'=>$res->userName,
 												'token'=>$data->auth->token,
                                                 'newId'=>$data->account->AccountId,
+                                                'NewLicId'=>$data->account->LicenseNumber,
 												'authorizationType'=>$data->auth->authorizationType,
 												'password'=>$res->password,
 												'plainPassword'=>$password,
@@ -365,6 +366,7 @@ class login extends CI_Controller {
         if(!isset($isLoggedIn) || $isLoggedIn != TRUE)
         {
             redirect('login');
+            $this->db->close();
         }
         
         $unlocked = $this->session->userdata('unlocked');

@@ -1561,6 +1561,33 @@ class myModel extends CI_Model {
         return $query->result();
     }
 
+
+    function accountIdGet($id=null)
+    {
+        $abc = $_SESSION['newId'];
+        $this->db->select('BaseTbl.companyAccountId');
+        $this->db->from('tbl_registration as BaseTbl');
+        $this->db->where('BaseTbl.id', $id);
+        $this->db->where('BaseTbl.companyAccountId', $abc);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    function exportSection()
+    {
+        $abc = $_SESSION['NewLicId'];
+
+        $this->db->select('BaseTbl.*');
+        $this->db->from('tbl_licensesection as BaseTbl');
+        $this->db->join('tbl_license as License','License.id = BaseTbl.masterId','left');
+        $this->db->where('License.licenseNoManual', $abc);
+//       $this->db->where('BaseTbl.isDeleted', 0);
+        $this->db->order_by('BaseTbl.id', 'asc');
+        $query = $this->db->get();
+
+        return $query->result();
+    }
     function intendedSiteGet()
     {
         $this->db->select('BaseTbl.*');
@@ -3810,6 +3837,7 @@ class myModel extends CI_Model {
              ";
 
             $query = $this->db->query($sql);
+        $this->db->close();
             return $query->result();
 
 
@@ -3923,7 +3951,7 @@ class myModel extends CI_Model {
         $this->db->where('BaseTbl.isDeleted', 0);
         $this->db->where('BaseTbl.id', $id);
         $query = $this->db->get();
-        
+        $this->db->close();
         return $query->result();
     }
 
@@ -4986,6 +5014,7 @@ class myModel extends CI_Model {
              )AS optimizedSub1;";
         $query = $this->db->query($sql);
         $result = $query->result();
+
         return $result;
         /*
         $this->db->select('Company.companyName,Company.companyUniqueNo,BaseTbl.*,  Company.companyNTN, Company.dslNo, RegistrationType.registrationType, RegistrationType.registrationSubType, ProductOrigin.productOrigin, ProductCategory.productCategory, UsedFor.usedFor, (SELECT COUNT(tbl_registration.id) FROM tbl_registration WHERE tbl_registration.id < BaseTbl.id AND tbl_registration.registrationStatus = "Submitted") as queuePosition, (SELECT tbls_user.userName FROM tbl_registrationhistory LEFT JOIN tbls_user ON tbls_user.id = tbl_registrationhistory.forwardedTo WHERE tbl_registrationhistory.masterId = BaseTbl.id ORDER BY tbl_registrationhistory.id DESC LIMIT 1) as assignedOfficer');
@@ -5218,7 +5247,7 @@ class myModel extends CI_Model {
         
         return $query->result();
     }
-    function myAjaxAllGet($table, $column = null, $val = null)
+    function myAjaxAllGet($table, $column=null, $val = null)
     {
         $this->db->select('BaseTbl.*');
         $this->db->from($table.' as BaseTbl');

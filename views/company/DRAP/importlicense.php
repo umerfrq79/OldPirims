@@ -96,6 +96,9 @@ if(explode('/', $_SERVER['REQUEST_URI'])[1] == $pageTitle[0]->url){
                             <div class="card-header">
                                 <h3 class="card-title">Lookup</h3>
                                 <div class="card-tools">
+<!--                                    --><?php
+//                                    echo '<a target="_blank" href="'.base_url().'downloadLicSection'.'" class="btn btn-info mr-5"><i class="fa fa-plus"></i> Download Sections Detail</a>';
+//                                    ?>
                                     <?php if( @$records[0]->countLicense < 1 && $this->roleId == 26){ //
                                         echo '<a href="'.base_url().$pageTitle[0]->url.'/add'.'" class="btn btn-primary"><i class="fa fa-plus"></i> License Data</a>';
                                     }
